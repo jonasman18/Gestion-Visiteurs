@@ -1,0 +1,83 @@
+/* ListeVisiteurs.css */
+
+.liste-visiteurs-container {
+  background-color: #1e1e2f; /* fond sombre */
+  color: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+.liste-visiteurs-container h2 {
+  color: #4fc3f7;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.liste-visiteurs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.liste-visiteurs-table th,
+.liste-visiteurs-table td {
+  border: 1px solid #444;
+  padding: 10px;
+  text-align: center;
+}
+
+.liste-visiteurs-table th {
+  background-color: #333;
+  color: #fff;
+}
+
+.liste-visiteurs-table tr:nth-child(even) {
+  background-color: #2a2a3d;
+}
+
+.liste-visiteurs-table tr:hover {
+  background-color: #383856;
+}
+
+.btn {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #2196f3;
+  border: none;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #1976d2;
+}
+
+.btn-danger {
+  background-color: #e53935;
+  border: none;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #c62828;
+}
+
+.alert {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.alert-success {
+  background-color: #388e3c;
+  color: #fff;
+}
+
+.alert-danger {
+  background-color: #d32f2f;
+  color: #fff;
+}
