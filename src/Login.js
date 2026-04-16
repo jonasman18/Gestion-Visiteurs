@@ -3,6 +3,9 @@ import './Login.css';
 import './App.css';
 import { useNavigate, Link } from "react-router-dom";
 
+// 🔥 URL BACKEND
+const API_URL = "https://api-1-kkrk.onrender.com";
+
 function Login({ onLogin }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,7 +16,7 @@ function Login({ onLogin }) {
         e.preventDefault();
 
         try {
-            const response = await fetch("http://localhost/api/login.php", {
+            const response = await fetch(`${API_URL}/login.php`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -24,7 +27,7 @@ function Login({ onLogin }) {
             const result = await response.json();
 
             if (result.success) {
-                onLogin(email); // ou result.nom si tu veux afficher le nom
+                onLogin(email); // ou result.nom
                 navigate("/accueil");
             } else {
                 setMessage(result.message || "Erreur de connexion");
@@ -47,6 +50,7 @@ function Login({ onLogin }) {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                 />
+
                 <input
                     type="password"
                     placeholder="Mot de passe"

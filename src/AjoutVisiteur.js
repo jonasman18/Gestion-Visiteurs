@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './AjoutVisiteur.css'; // pour le style (on va le créer juste après)
+import './AjoutVisiteur.css';
+
+// 🔥 URL BACKEND
+const API_URL = "https://api-1-kkrk.onrender.com";
 
 function AjoutVisiteur() {
   const [nom, setNom] = useState('');
   const [jours, setJours] = useState('');
   const [tarif, setTarif] = useState('');
   const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState(''); // 'success' ou 'error'
+  const [messageType, setMessageType] = useState('');
 
   const afficherMessage = (text, type = 'success') => {
     setMessage(text);
@@ -21,14 +24,13 @@ function AjoutVisiteur() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post('http://localhost/api/visiteurs.php', {
-      nom,
+    axios.post(`${API_URL}/visiteurs.php`, {
+      nom: nom,
       nombre_jours: jours,
       tarif_journalier: tarif
     })
     .then(res => {
       afficherMessage(res.data.message || "Ajout réussi");
-      // Vider les champs
       setNom('');
       setJours('');
       setTarif('');
@@ -42,6 +44,7 @@ function AjoutVisiteur() {
   return (
     <div className="ajout-container">
       <h2>Ajouter un visiteur</h2>
+
       <form onSubmit={handleSubmit} className="ajout-form">
         <div className="form-group">
           <label>Nom :</label>
@@ -52,6 +55,7 @@ function AjoutVisiteur() {
             required
           />
         </div>
+
         <div className="form-group">
           <label>Nombre de jours :</label>
           <input
@@ -61,6 +65,7 @@ function AjoutVisiteur() {
             required
           />
         </div>
+
         <div className="form-group">
           <label>Tarif journalier :</label>
           <input
@@ -70,12 +75,15 @@ function AjoutVisiteur() {
             required
           />
         </div>
-        <button type="submit" className="submit-btn">Ajouter</button>
+
+        <button type="submit" className="submit-btn">
+          Ajouter
+        </button>
       </form>
 
-      {/* Message de confirmation en bas */}
+      {/* Message */}
       {message && (
-        <div className={`alert ${messageType === 'error' ? 'alert-danger' : 'alert-success'}`} role="alert">
+        <div className={`alert ${messageType === 'error' ? 'alert-danger' : 'alert-success'}`}>
           {message}
         </div>
       )}

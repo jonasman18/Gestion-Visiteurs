@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 
+// 🔥 URL BACKEND
+const API_URL = "https://api-1-kkrk.onrender.com";
+
 export default function Register() {
   const [nom, setNom] = useState('');
   const [email, setEmail] = useState('');
@@ -13,10 +16,9 @@ export default function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    
 
     try {
-      const res = await axios.post('http://localhost/api/register.php', {
+      const res = await axios.post(`${API_URL}/register.php`, {
         nom,
         email,
         password
@@ -36,14 +38,14 @@ export default function Register() {
     }
   };
 
-  
   const titleStyle = {
-    color : '#ffffff'
+    color: '#ffffff'
   };
-  
+
   return (
     <div className="form-container">
       <h2 style={titleStyle}>Créer un compte</h2>
+
       <form onSubmit={handleRegister} className="form-box">
         <input
           type="text"
@@ -52,6 +54,7 @@ export default function Register() {
           onChange={(e) => setNom(e.target.value)}
           required
         />
+
         <input
           type="email"
           placeholder="Adresse e-mail"
@@ -59,6 +62,7 @@ export default function Register() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+
         <input
           type="password"
           placeholder="Mot de passe"
@@ -66,8 +70,13 @@ export default function Register() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+
         <button type="submit">S'inscrire</button>
-        <p className="redirect-link">Déjà inscrit ? <Link to="/login">Se connecter</Link></p>
+
+        <p className="redirect-link">
+          Déjà inscrit ? <Link to="/login">Se connecter</Link>
+        </p>
+
         {message && (
           <div className={`alert ${type === 'error' ? 'alert-error' : 'alert-success'}`}>
             {message}

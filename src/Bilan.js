@@ -3,6 +3,8 @@ import axios from "axios";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
+// 🔥 URL BACKEND
+const API_URL = "https://api-1-kkrk.onrender.com";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -10,7 +12,9 @@ export default function Bilan() {
   const [bilan, setBilan] = useState({ total: 0, minimum: 0, maximum: 0 });
 
   useEffect(() => {
-    axios.get("http://localhost/api/bilan.php").then(res => setBilan(res.data));
+    axios.get(`${API_URL}/bilan.php`)
+      .then(res => setBilan(res.data))
+      .catch(err => console.error(err));
   }, []);
 
   const data = {
@@ -21,7 +25,6 @@ export default function Bilan() {
     }]
   };
 
-  // Options pour réduire la taille du graphique
   const options = {
     maintainAspectRatio: false,
     plugins: {
@@ -32,21 +35,21 @@ export default function Bilan() {
   };
 
   const titleStyle = {
-    color : '#ffffff'
+    color: '#ffffff'
   };
-  
+
   return (
     <div>
       <h2 style={titleStyle}>Bilan des paiements</h2>
+
       <p>Total : {bilan.total} Ar</p>
       <p>Minimum : {bilan.minimum} Ar</p>
       <p>Maximum : {bilan.maximum} Ar</p>
 
-      {/* Conteneur pour contrôler la taille */}
       <div style={{
-        width: '500px', // Largeur souhaitée
-        height: '480px', // Hauteur souhaitée
-        margin: '20px auto' // centré
+        width: '500px',
+        height: '480px',
+        margin: '20px auto'
       }}>
         <Pie data={data} options={options} />
       </div>

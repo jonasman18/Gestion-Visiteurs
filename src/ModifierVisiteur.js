@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './ModifierVisiteur.css'; // 👈 on importe le CSS
+import './ModifierVisiteur.css';
+
+// 🔥 URL BACKEND
+const API_URL = "https://api-1-kkrk.onrender.com";
 
 function ModifierVisiteur({ visiteur, onClose }) {
   const [nom, setNom] = useState(visiteur.nom);
@@ -21,14 +24,15 @@ function ModifierVisiteur({ visiteur, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.put('http://localhost/api/visiteurs.php', {
+    axios.put(`${API_URL}/visiteurs.php`, {
       id: visiteur.id,
-      nom,
+      nom: nom,
       nombre_jours: jours,
       tarif_journalier: tarif
     })
     .then(res => {
       afficherMessage(res.data.message || "Modification réussie");
+
       setTimeout(() => {
         onClose();
       }, 1000);
@@ -42,22 +46,42 @@ function ModifierVisiteur({ visiteur, onClose }) {
   return (
     <div className="modifier-visiteur-card">
       <h4 className="modifier-visiteur-title">Modifier Visiteur</h4>
+
       <form onSubmit={handleSubmit} className="modifier-visiteur-form">
         <div className="modifier-visiteur-group">
           <label>Nom :</label>
-          <input value={nom} onChange={e => setNom(e.target.value)} required />
+          <input
+            value={nom}
+            onChange={e => setNom(e.target.value)}
+            required
+          />
         </div>
+
         <div className="modifier-visiteur-group">
           <label>Nombre de jours :</label>
-          <input type="number" value={jours} onChange={e => setJours(e.target.value)} required />
+          <input
+            type="number"
+            value={jours}
+            onChange={e => setJours(e.target.value)}
+            required
+          />
         </div>
+
         <div className="modifier-visiteur-group">
           <label>Tarif journalier :</label>
-          <input type="number" value={tarif} onChange={e => setTarif(e.target.value)} required />
+          <input
+            type="number"
+            value={tarif}
+            onChange={e => setTarif(e.target.value)}
+            required
+          />
         </div>
+
         <div className="modifier-visiteur-buttons">
           <button type="submit">Enregistrer</button>
-          <button type="button" onClick={onClose} className="btn-annuler">Annuler</button>
+          <button type="button" onClick={onClose} className="btn-annuler">
+            Annuler
+          </button>
         </div>
       </form>
 
