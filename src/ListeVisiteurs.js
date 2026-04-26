@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ModifierVisiteur from './ModifierVisiteur';
+import { getToken } from './lib/auth';
 import './ListeVisiteurs.css';
 
-// 🔥 URL BACKEND (Render)
 const API_URL = "https://api-1-kkrk.onrender.com";
 
+// ✅ Headers JWT pour axios
+const authHeaders = () => ({
+  headers: { Authorization: `Bearer ${getToken()}` }
+});
+
 function ListeVisiteurs() {
-  const [visiteurs, setVisiteurs] = useState([]);
-  const [selected, setSelected] = useState(null);
-  const [message, setMessage] = useState('');
+  const [visiteurs, setVisiteurs]   = useState([]);
+  const [selected, setSelected]     = useState(null);
+  const [message, setMessage]       = useState('');
   const [messageType, setMessageType] = useState('');
 
   // 🔷 Charger les visiteurs
   const fetchVisiteurs = () => {
-    axios.get(`${API_URL}/visiteurs.php`)
+    axios.get(`${API_URL}/visiteurs.php`, authHeaders())
       .then(res => setVisiteurs(res.data))
       .catch(err => {
         console.error(err);
@@ -40,7 +45,7 @@ function ListeVisiteurs() {
   // 🔷 Suppression
   const supprimer = (id) => {
     if (window.confirm("Supprimer ce visiteur ?")) {
-      axios.delete(`${API_URL}/visiteurs.php?id=${id}`)
+      axios.delete(`${API_URL}/visiteurs.php?id=${id}`, authHeaders())
         .then(res => {
           fetchVisiteurs();
           afficherMessage(res.data.message || "Suppression réussie");
@@ -91,7 +96,6 @@ function ListeVisiteurs() {
                 >
                   Modifier
                 </button>
-
                 <button
                   className="btn btn-danger btn-sm"
                   onClick={() => supprimer(v.id)}
@@ -104,7 +108,6 @@ function ListeVisiteurs() {
         </tbody>
       </table>
 
-      {/* Message */}
       {message && (
         <div className={`alert ${messageType === 'error' ? 'alert-danger' : 'alert-success'}`}>
           {message}

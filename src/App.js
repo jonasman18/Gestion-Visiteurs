@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import AjoutVisiteur from './AjoutVisiteur';
 import ListeVisiteurs from './ListeVisiteurs';
@@ -7,42 +7,55 @@ import Accueil from './Accueil';
 import Login from './Login';
 import PrivateRoute from './PrivateRoute';
 import Register from './Register';
+import { getUser, removeToken } from './lib/auth';
 import './App.css';
 
 function App() {
-  const [user, setUser] = useState(null);
+  // ✅ Charge l'utilisateur depuis le JWT au démarrage
+  const [user, setUser] = useState(getUser);
   const isAuthenticated = !!user;
-  const handleLogin = (userData) => {setUser(userData)}
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    removeToken();
+    setUser(null);
+  };
+
   return (
     <Router>
       <div className="app-background">
         <div className="container mt-4">
           {isAuthenticated && (
             <nav>
-              
-              <Link to="/" className='btn btn-outline-primary'>Login</Link>
-              <Link to="/accueil" className='btn btn-outline-primary'>Accueil</Link>
+              <span className="me-3">
+                👤 <strong>{user.nom}</strong>
+              </span>
+              <Link to="/accueil" className='btn btn-outline-primary me-2'>Accueil</Link>
               <Link to="/ajout" className="btn btn-outline-primary me-2">Ajout</Link>
               <Link to="/liste" className="btn btn-outline-primary me-2">Liste</Link>
-              <Link to="/bilan" className="btn btn-outline-primary">Bilan</Link>
+              <Link to="/bilan" className="btn btn-outline-primary me-2">Bilan</Link>
+              {/* ✅ Bouton déconnexion */}
+              <button
+                className="btn btn-outline-danger"
+                onClick={handleLogout}
+              >
+                Déconnexion
+              </button>
             </nav>
           )}
           <hr />
 
           <Routes>
-            <Route path="/" element={<Login onLogin={setUser} />} />
-            <Route
-              path="/login"
-              element={
-                <Login onLogin={handleLogin} />
-
-              }
-            />
+            <Route path="/" element={<Login onLogin={handleLogin} />} />
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route
               path="/accueil"
               element={
                 <PrivateRoute isAuthenticated={isAuthenticated}>
-                  <Accueil />
+                  <Accueil user={user} />
                 </PrivateRoute>
               }
             />
@@ -70,12 +83,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route 
-              path="/register"
-              element={
-                <Register/>
-              }
-              />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </div>
       </div>
