@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './AjoutVisiteur.css';
+import { authHeaders } from './lib/auth'
 
 // 🔥 URL BACKEND
 const API_URL = "https://api-1-kkrk.onrender.com";
@@ -28,7 +29,7 @@ function AjoutVisiteur() {
       nom: nom,
       nombre_jours: jours,
       tarif_journalier: tarif
-    })
+    }, authHeaders())
     .then(res => {
       afficherMessage(res.data.message || "Ajout réussi");
       setNom('');
