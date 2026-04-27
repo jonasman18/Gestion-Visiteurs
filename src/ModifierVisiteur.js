@@ -30,7 +30,7 @@ function ModifierVisiteur({ visiteur, onClose }) {
       nom: nom,
       nombre_jours: jours,
       tarif_journalier: tarif
-    }, authHeaders())
+    }, { headers: authHeaders() })
     .then(res => {
       afficherMessage(res.data.message || "Modification réussie");
 
